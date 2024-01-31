@@ -1,8 +1,10 @@
 const menuBtn = document.querySelector(".caret");
 const listWraper = document.querySelector(".list-wraper");
 const listContainer = document.querySelector(".list-container");
+const root = document.querySelector(":root");
 let list = document.querySelector(".list");
 let menuDown = false;
+let isDarkMode = getComputedStyle(root).getPropertyValue("--blue") === "black";
 const menus = {
     main: `<ul class="list">
     <li class="list-item"  onclick="changeMenu('settings')">
@@ -24,6 +26,10 @@ const menus = {
             <i class="fa fa-moon" aria-hidden="true"></i>
             <p>Night Mode</p>
         </div>
+        <label class="switch">
+            <input type="checkbox" class="night-mode">
+            <span class="slider round"></span>
+        </label>
     </li>
 </ul>`,
     settings: `<ul class="list">
@@ -91,6 +97,7 @@ menuBtn.addEventListener("click", () => {
         listWraper.style.height = `${list.offsetHeight}px`;
         listWraper.style.zIndex = "0";
         menuBtn.style.transform = "rotate(180deg)";
+        checkMode();
     }else {
         listWraper.style.height = "0px";
         listWraper.style.zIndex = "-1";
@@ -131,6 +138,7 @@ function changeMenuBack(menu) {
     setTimeout(() => {
         listContainer.innerHTML = menus[menu];
         list = document.querySelector(".list");
+        checkMode()
         list.classList.add("previus");
         listWraper.style.height = `${list.offsetHeight}px`;
     }, 120);
@@ -142,4 +150,11 @@ function changeMenuBack(menu) {
 function resetMenu() {
     listContainer.innerHTML = menus["main"];
      list = document.querySelector(".list");
+     checkMode()
+}
+
+//Identify dark mode
+function checkMode() {
+    let modeSetter = document.querySelector(".night-mode");
+    modeSetter.checked = isDarkMode;
 }
